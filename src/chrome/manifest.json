@@ -1,10 +1,10 @@
 {
 	"manifest_version": 2,
-	"name": "vue3-chrome-extension",
-	"description": "基于vue3的chrome插件",
+	"name": "沙漏",
+	"description": "高效安排任务",
 	"version": "0.0.1",
 	"browser_action": {
-		"default_title": "vue3-chrome-extension",
+		"default_title": "沙漏",
 		"default_icon": "assets/logo.png",
 		"default_popup": "popup.html"
 	},

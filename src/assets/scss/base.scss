@@ -1,0 +1,48 @@
+// 全局通用样式
+.g-popup {
+  width: 400px;
+  height: 320px;
+  background: $color-background;
+  color: $color-text;
+  padding: 10px 7px;
+}
+
+.g-relative {
+  position: relative;
+}
+
+.g-index {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-size: $font-size-medium-x;
+
+  &-header {
+    display: flex;
+    justify-content: center;
+    height: 30px;
+    color: $color-theme;
+    font-size: $font-size-large-x;
+    font-weight: bold;
+  }
+
+  &-main {
+    flex-grow: 1;
+  }
+
+  &-footer {
+    display: flex;
+    justify-content: space-between;
+    height: 20px;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0)
+  }
+
+  100% {
+    transform: rotate(360deg)
+  }
+}
