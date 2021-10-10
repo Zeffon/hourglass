@@ -1,5 +1,5 @@
 <template>
-  <Popup msg="Welcome to Your Vue.js + TypeScript App" />
+  <Popup />
 </template>
 
 <script lang="ts">

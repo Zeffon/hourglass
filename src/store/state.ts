@@ -1,3 +1,5 @@
-const state = {}
+const state = {
+  isEdit: false
+}
 
 export default state
