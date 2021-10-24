@@ -2,7 +2,7 @@
 .g-popup {
   display: flex;
   flex-direction: column;
-  width: 400px;
+  width: 600px;
   height: 320px;
   background: $color-background;
   color: $color-text;
@@ -41,4 +41,10 @@
   100% {
     transform: rotate(360deg)
   }
+}
+
+// 模块通用样式
+.m-header {
+  display: flex;
+  justify-content: end;
 }
