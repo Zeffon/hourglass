@@ -3,12 +3,13 @@
  * @Author: Zeffon
  * @Date: 2021-10-24 22:30:07
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-10-24 23:01:41
+ * @LastEditTime: 2021-10-26 21:00:22
 -->
 <template>
   <div class="m-header">
     <div>已完成</div>
-    <div>我的</div>
+    <div>当前（{{ curCount }}）</div>
+    <div>已完成</div>
   </div>
 </template>
 
@@ -17,7 +18,15 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'm-header',
-  components: {}
+  components: {},
+  props: {
+    curCount: {
+      type: Number,
+      default() {
+        return 0
+      }
+    }
+  }
 })
 </script>
 
