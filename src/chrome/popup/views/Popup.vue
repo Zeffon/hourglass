@@ -3,12 +3,12 @@
  * @Author: Zeffon
  * @Date: 2021-10-09 22:02:36
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-10-26 21:07:25
+ * @LastEditTime: 2021-10-28 22:11:01
 -->
 <template>
   <div class="g-popup">
     <div class="g-popup-header">
-      <MHeader />
+      <MHeader curKey="two" />
     </div>
     <div class="g-popup-main">
       <draggable
