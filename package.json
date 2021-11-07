@@ -10,13 +10,15 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "good-storage": "^1.1.1",
     "vue": "^3.2.2",
-    "vuedraggable": "^4.1.0",
     "vue-router": "^4.0.11",
+    "vuedraggable": "^4.1.0",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.158",
+    "@types/good-storage": "^1.1.0",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
     "@vue/cli-plugin-babel": "~4.5.0",
