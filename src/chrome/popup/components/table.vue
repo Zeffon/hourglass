@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-10-30 21:11:58
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-03 22:34:26
+ * @LastEditTime: 2021-11-07 14:13:03
 -->
 <template>
   <div class="m-table">
@@ -16,8 +16,12 @@
           @change="(name) => changeLevel(name, index)"
         />
       </div>
-      <div></div>
-      <div class="m-table__item-op"></div>
+      <div class="m-table__item-time">{{ item.time }}min</div>
+      <div class="m-table__item-op">
+        <div class="icon-start">启动</div>
+        <div class="icon-edit">编辑</div>
+        <div class="icon-delete">删除</div>
+      </div>
     </div>
   </div>
 </template>

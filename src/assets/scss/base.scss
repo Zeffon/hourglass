@@ -77,5 +77,16 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    &-level {
+      margin-right: 16px;
+    }
+    &-op {
+      display: flex;
+
+      > div {
+        margin-left: 16px;
+        cursor: pointer;
+      }
+    }
   }
 }
