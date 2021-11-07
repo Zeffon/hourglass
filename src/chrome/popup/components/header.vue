@@ -1,10 +1,3 @@
-<!--
- * @Description: 
- * @Author: Zeffon
- * @Date: 2021-10-24 22:30:07
- * @LastEditors: Zeffon
- * @LastEditTime: 2021-10-28 22:16:51
--->
 <template>
   <div class="m-header">
     <div
@@ -67,5 +60,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style lang="scss" scope></style>

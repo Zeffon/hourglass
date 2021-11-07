@@ -3,25 +3,15 @@
  * @Author: Zeffon
  * @Date: 2021-10-09 22:02:36
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-10-28 22:11:01
+ * @LastEditTime: 2021-10-31 00:12:32
 -->
 <template>
   <div class="g-popup">
     <div class="g-popup-header">
-      <MHeader curKey="two" />
+      <MHeader v-model:curKey="curKey" @click="listenClick" />
     </div>
     <div class="g-popup-main">
-      <draggable
-        v-model="myArray"
-        group="people"
-        @start="drag = true"
-        @end="drag = false"
-        item-key="id"
-      >
-        <template #item="{ element }">
-          <div>{{ element }}</div>
-        </template>
-      </draggable>
+      <MTable :data="data" />
     </div>
     <div class="g-popup-footer">
       <div>设置</div>
@@ -31,21 +21,37 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import draggable from 'vuedraggable'
-import MHeader from '../components/header.vue'
+import { defineComponent, ref } from 'vue'
+// import draggable from 'vuedraggable'
+import { MHeader, MTable } from '../components'
 
 export default defineComponent({
   name: 'Index',
   components: {
-    draggable,
-    MHeader
+    MHeader,
+    MTable
   },
 
   data() {
     return {
-      myArray: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      data: [
+        { name: '少数就哦啊就是好啊少数睡觉哦啊就是第三方', level: '重要' },
+        { name: '少数就哦啊就是', level: '紧急' },
+        { name: '少数就哦啊就是', level: '一般' },
+        { name: '少数就哦啊就是', level: '重要' }
+      ],
       drag: false
+    }
+  },
+  setup() {
+    const curKey = ref('one')
+    return {
+      curKey
+    }
+  },
+  methods: {
+    listenClick() {
+      console.log(this.curKey)
     }
   }
 })
