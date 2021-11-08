@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-11-07 23:02:10
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-07 23:52:15
+ * @LastEditTime: 2021-11-08 09:19:06
 -->
 <template>
   <teleport to="body">
@@ -15,8 +15,10 @@
             class="content__comments"
             rows="2"
             cols="48"
-            placeholder="请输入任务，多个采用序号. +换行"
+            placeholder="请输入任务，多个使用换行"
+            v-model="textdata"
           />
+          <div class="err-tip">{{ errTip }}</div>
         </div>
 
         <div class="task-add__footer">
@@ -40,7 +42,9 @@ export default defineComponent({
   props: {},
   data() {
     return {
-      visible: false
+      visible: false,
+      textdata: '',
+      errTip: ''
     }
   },
   methods: {
@@ -51,12 +55,19 @@ export default defineComponent({
       this.visible = false
     },
     cancel() {
+      this.textdata = ''
+      this.errTip = ''
       this.hide()
-      this.$emit('cancel')
     },
     ok() {
-      this.hide()
-      this.$emit('ok')
+      this._dataCheck()
+    },
+    _dataCheck() {
+      const textdata = this.textdata
+      if (textdata === '') {
+        this.errTip = '请输入任务'
+        return false
+      }
     }
   }
 })
@@ -70,7 +81,9 @@ export default defineComponent({
   bottom: 0;
   left: 0;
   width: 360px;
-  height: 136px;
+  height: 154px;
+  padding: 10px;
+  box-sizing: border-box;
   z-index: 400;
   background: #ffffff;
   box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.2);
@@ -80,20 +93,23 @@ export default defineComponent({
 
   .content {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
     width: 100%;
-    height: 78%;
+    height: 80%;
     &__comments {
       width: 340px !important;
       height: 90px !important;
       box-sizing: border-box;
     }
+    .err-tip {
+      font-size: $font-size-small;
+      color: $danger-color;
+    }
   }
 
   &__footer {
     position: absolute;
-    width: 100%;
+    width: 94%;
     height: 36px;
     line-height: 2;
     bottom: 0;
