@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-11-07 23:02:10
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-08 09:19:06
+ * @LastEditTime: 2021-11-09 07:35:12
 -->
 <template>
   <teleport to="body">
@@ -36,6 +36,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { TaskModel, Task } from '../models'
 
 export default defineComponent({
   name: 'task-add',
@@ -60,14 +61,33 @@ export default defineComponent({
       this.hide()
     },
     ok() {
-      this._dataCheck()
-    },
-    _dataCheck() {
       const textdata = this.textdata
+      if (!this._dataCheck(textdata)) {
+        return
+      }
+      this._dataMake(textdata)
+    },
+    _dataCheck(textdata: string) {
       if (textdata === '') {
         this.errTip = '请输入任务'
         return false
       }
+      return true
+    },
+    _dataMake(textdata: string) {
+      const strArr = textdata.split('\n')
+      const task = new Task()
+      strArr.forEach((item, index) => {
+        const timestr = new Date().getTime()
+        const obj: TaskModel = {
+          id: timestr + index,
+          name: item,
+          level: '一般',
+          time: 0,
+          status: 0
+        }
+        task.addItem(obj)
+      })
     }
   }
 })
