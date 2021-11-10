@@ -22,16 +22,16 @@ export default defineComponent({
   components: {},
   emits: ['change'],
   props: {
-    name: {
-      type: String,
-      default: '一般'
+    level: {
+      type: Number,
+      default: 0
     }
   },
   setup(props, { emit }) {
     const options = ref(['一般', '重要', '紧急'])
-
-    const selectName = ref(props.name)
-    const selectCls = ref('select-' + options.value.indexOf(selectName.value))
+    const level = options.value[props.level]
+    const selectName = ref(level)
+    const selectCls = ref('select-' + props.level)
 
     watch(selectName, (val) => {
       selectCls.value = 'select-' + options.value.indexOf(val)

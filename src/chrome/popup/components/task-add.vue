@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-11-07 23:02:10
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-09 07:35:12
+ * @LastEditTime: 2021-11-10 08:23:05
 -->
 <template>
   <teleport to="body">
@@ -82,7 +82,7 @@ export default defineComponent({
         const obj: TaskModel = {
           id: timestr + index,
           name: item,
-          level: '一般',
+          level: 0,
           time: 0,
           status: 0
         }

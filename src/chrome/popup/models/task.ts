@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-11-09 06:05:22
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-09 07:40:22
+ * @LastEditTime: 2021-11-10 08:31:19
  */
 import storage from 'good-storage'
 
@@ -11,7 +11,7 @@ export interface TaskModel {
   id: number
   name: string
   time: number
-  level: string
+  level: number
   end_time?: string
   status: number
 }
@@ -32,6 +32,7 @@ export class Task {
   }
 
   getAllTaskFromLocal() {
+    console.log(this._getTaskData())
     return this._getTaskData()
   }
 
@@ -73,7 +74,6 @@ export class Task {
   }
 
   _getTaskData() {
-    debugger
     if (this._taskData.items.length !== 0) {
       return this._taskData
     }
@@ -81,6 +81,7 @@ export class Task {
     if (!taskData) {
       taskData = this._initTaskDataStorage()
     }
+    this._taskData = taskData
     return taskData
   }
 
@@ -99,7 +100,7 @@ export class Task {
   _pushItem(newItem: TaskModel) {
     const taskData = this._getTaskData()
     const items = taskData.items
-    items.unshift(newItem)
+    items.push(newItem)
   }
 
   findEqualItem(id: number) {
