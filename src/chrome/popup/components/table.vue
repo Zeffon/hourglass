@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-10-30 21:11:58
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-07 14:13:03
+ * @LastEditTime: 2021-11-11 23:33:34
 -->
 <template>
   <div class="m-table">
@@ -29,7 +29,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import MLevel from './level.vue'
-import { ref } from 'vue'
 
 export default defineComponent({
   name: 'm-table',

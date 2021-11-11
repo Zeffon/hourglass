@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-11-09 06:05:22
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-10 08:31:19
+ * @LastEditTime: 2021-11-11 22:52:59
  */
 import storage from 'good-storage'
 
@@ -32,7 +32,6 @@ export class Task {
   }
 
   getAllTaskFromLocal() {
-    console.log(this._getTaskData())
     return this._getTaskData()
   }
 
@@ -49,7 +48,6 @@ export class Task {
   }
 
   addItem(newItem: TaskModel) {
-    debugger
     this._pushItem(newItem)
     this._refreshStorage()
   }

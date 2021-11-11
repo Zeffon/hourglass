@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-11-07 23:02:10
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-10 08:23:05
+ * @LastEditTime: 2021-11-11 22:56:28
 -->
 <template>
   <teleport to="body">
@@ -37,6 +37,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { TaskModel, Task } from '../models'
+const task = new Task()
 
 export default defineComponent({
   name: 'task-add',
@@ -48,6 +49,7 @@ export default defineComponent({
       errTip: ''
     }
   },
+  emits: ['ok'],
   methods: {
     show() {
       this.visible = true
@@ -66,7 +68,10 @@ export default defineComponent({
         return
       }
       this._dataMake(textdata)
+      this.cancel()
+      this.$emit('ok')
     },
+
     _dataCheck(textdata: string) {
       if (textdata === '') {
         this.errTip = '请输入任务'
@@ -76,7 +81,7 @@ export default defineComponent({
     },
     _dataMake(textdata: string) {
       const strArr = textdata.split('\n')
-      const task = new Task()
+
       strArr.forEach((item, index) => {
         const timestr = new Date().getTime()
         const obj: TaskModel = {
