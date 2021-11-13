@@ -3,9 +3,10 @@
  * @Author: Zeffon
  * @Date: 2021-11-09 06:05:22
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-11 22:52:59
+ * @LastEditTime: 2021-11-13 15:18:06
  */
 import storage from 'good-storage'
+import { TASK_STATUS } from '.'
 
 export interface TaskModel {
   id: number
@@ -31,11 +32,23 @@ export class Task {
     return this
   }
 
+  getCurrentTask() {
+    const tasks = this._getTaskData().items as any[]
+    return tasks.filter((item) => {
+      return item.status !== TASK_STATUS.FINISHED
+    })
+  }
+
+  getFinishTask() {
+    const tasks = this._getTaskData().items as any[]
+    return tasks.filter((item) => {
+      return item.status === TASK_STATUS.FINISHED
+    })
+  }
+
   getAllTaskFromLocal() {
     return this._getTaskData()
   }
-
-  // async getAllTaskFromServer() {}
 
   clear() {
     const taskData = this._getTaskData()
@@ -59,9 +72,44 @@ export class Task {
     this._refreshStorage()
   }
 
+  modifyLevel(id: number, level: number) {
+    const oldItem = this._findEqualItem(id)
+    oldItem.level = level
+    this._refreshStorage()
+  }
+
+  finishTask(id: number) {
+    this._modifyStatus(id, TASK_STATUS.FINISHED)
+  }
+
+  startTask(id: number) {
+    const items = this._getTaskData().items
+    items.forEach((item: any) => {
+      item.status = TASK_STATUS.PAUSING
+    })
+    this._modifyStatus(id, TASK_STATUS.RUNNING)
+  }
+
+  stopTask(id: number) {
+    this._modifyStatus(id, TASK_STATUS.PAUSING)
+  }
+
+  _modifyStatus(id: number, status: number) {
+    const oldItem = this._findEqualItem(id)
+    oldItem.status = status
+    this._refreshStorage()
+  }
+
   isEmpty() {
     const taskData = this._getTaskData()
     return taskData.items.length === 0
+  }
+
+  _findEqualItem(id: number) {
+    const taskData = this._getTaskData()
+    return taskData.items.find((item: TaskModel) => {
+      return item.id === id
+    })
   }
 
   _findEqualItemIndex(id: number) {

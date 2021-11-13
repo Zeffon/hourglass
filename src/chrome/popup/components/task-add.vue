@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-11-07 23:02:10
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-11 22:56:28
+ * @LastEditTime: 2021-11-13 13:51:39
 -->
 <template>
   <teleport to="body">
@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { TaskModel, Task } from '../models'
+import { TaskModel, Task, TASK_STATUS, TASK_LEVEL } from '../models'
 const task = new Task()
 
 export default defineComponent({
@@ -87,9 +87,9 @@ export default defineComponent({
         const obj: TaskModel = {
           id: timestr + index,
           name: item,
-          level: 0,
+          level: TASK_LEVEL.GENERAL,
           time: 0,
-          status: 0
+          status: TASK_STATUS.INIT
         }
         task.addItem(obj)
       })

@@ -16,6 +16,7 @@
 <script lang="ts">
 import { defineComponent, watch } from 'vue'
 import { ref } from 'vue'
+import { TASK_LEVEL } from '../models'
 
 export default defineComponent({
   name: 'm-level',
@@ -24,7 +25,7 @@ export default defineComponent({
   props: {
     level: {
       type: Number,
-      default: 0
+      default: TASK_LEVEL.GENERAL
     }
   },
   setup(props, { emit }) {
@@ -34,9 +35,10 @@ export default defineComponent({
     const selectCls = ref('select-' + props.level)
 
     watch(selectName, (val) => {
-      selectCls.value = 'select-' + options.value.indexOf(val)
+      const index = options.value.indexOf(val)
+      selectCls.value = 'select-' + index
       selectName.value = val
-      emit('change', val)
+      emit('change', index)
     })
 
     return {

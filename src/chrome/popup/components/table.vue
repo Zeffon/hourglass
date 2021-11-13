@@ -3,48 +3,114 @@
  * @Author: Zeffon
  * @Date: 2021-10-30 21:11:58
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-11 23:33:34
+ * @LastEditTime: 2021-11-13 15:35:55
 -->
 <template>
   <div class="m-table">
-    <div class="m-table__item" v-for="(item, index) in data" :key="index">
+    <div class="m-table__item" v-for="(task, index) in tasks" :key="index">
       <div class="m-table__item-index">{{ index + 1 + '.' }}</div>
-      <div class="m-table__item-name">{{ item.name }}</div>
+      <div class="m-table__item-name">{{ task.name }}</div>
       <div class="m-table__item-level">
         <m-level
-          v-model:name="item.level"
-          @change="(name) => changeLevel(name, index)"
+          v-model:level="task.level"
+          @change="(level) => changeLevel(task.id, level)"
         />
       </div>
-      <div class="m-table__item-time">{{ item.time }}min</div>
+      <div class="m-table__item-time">{{ task.time }}min</div>
       <div class="m-table__item-op">
-        <div class="icon-start">启动</div>
-        <div class="icon-edit">编辑</div>
-        <div class="icon-delete">删除</div>
+        <div
+          class="icon start"
+          @click="startTask(task.id)"
+          v-if="
+            task.status === TASK_STATUS.INIT ||
+            task.status === TASK_STATUS.PAUSING
+          "
+        />
+        <div class="icon stop" @click="stopTask(task.id)" v-else />
+        <div
+          class="icon finish"
+          @click="finishTask(task.id)"
+          v-if="task.status !== TASK_STATUS.FINISHED"
+        />
+        <div class="icon delete" @click="deleteTask(task.id)" />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, reactive, toRefs } from 'vue'
 import MLevel from './level.vue'
+import { Task } from '../models'
+import { TASK_STATUS } from '../models'
 
+const task = new Task()
 export default defineComponent({
   name: 'm-table',
   components: {
     MLevel
   },
+  data() {
+    return {
+      TASK_STATUS
+    }
+  },
+  emits: ['start', 'stop', 'finish', 'delete'],
   props: {
     data: {
       type: Array,
       default: () => []
     }
   },
-  methods: {
-    changeLevel(val: string, index: number) {
-      console.log(index + ' ' + val)
+  setup(props, { emit }) {
+    const dataReactive = reactive({ tasks: props.data })
+
+    const dataRefs = toRefs(dataReactive)
+
+    const changeLevel = (id: number, val: number) => {
+      task.modifyLevel(id, val)
+    }
+
+    const startTask = (id: number) => {
+      emit('start', id)
+    }
+    const stopTask = (id: number) => {
+      emit('stop', id)
+    }
+    const finishTask = (id: number) => {
+      emit('finish', id)
+    }
+
+    const deleteTask = (id: number) => {
+      emit('delete', id)
+    }
+
+    return {
+      ...dataRefs,
+      changeLevel,
+      startTask,
+      stopTask,
+      finishTask,
+      deleteTask
     }
   }
 })
 </script>
+<style lang="scss" scoped>
+.icon {
+  width: 20px;
+  height: 20px;
+}
+.start {
+  background: url('~@/assets/images/start.png') no-repeat;
+}
+.stop {
+  background: url('~@/assets/images/stop.png') no-repeat;
+}
+.finish {
+  background: url('~@/assets/images/finish.png') no-repeat;
+}
+.delete {
+  background: url('~@/assets/images/delete.png') no-repeat;
+}
+</style>
