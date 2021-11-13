@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-10-09 22:02:36
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-13 22:53:11
+ * @LastEditTime: 2021-11-13 23:53:53
 -->
 <template>
   <div class="g-popup">
@@ -58,7 +58,7 @@ interface FinishProps {
   restart: (id: number) => void
   removeFinishTask: (id: number) => void
 }
-const task = new Task()
+const taskModel = new Task()
 export default defineComponent({
   name: 'popup-index',
   components: {
@@ -77,49 +77,52 @@ export default defineComponent({
     const tableRef = ref<null | HTMLElement>(null)
     const finshTableRef = ref<null | HTMLElement>(null)
     const curKey = ref(TAG_KEY.TWO)
+    const hasRunging = ref(taskModel.hasRunning())
 
     const tasks: TableProps = reactive({
-      items: task.getCurrentTask().items,
+      items: taskModel.getCurrentTask().items,
       refresh: () => {
         const items = tasks.items
-        const newItems = task.getCurrentTask().items
+        const newItems = taskModel.getCurrentTask().items
         tasks.items = items.splice(0, items.length, ...newItems)
         tasks.items.length = newItems.length
       },
       start: (id: number) => {
-        task.startTask(id)
+        hasRunging.value = true
+        taskModel.startTask(id)
         tasks.refresh()
       },
       stop: (id: number) => {
-        task.stopTask(id)
+        hasRunging.value = false
+        taskModel.stopTask(id)
         tasks.refresh()
       },
       finish: (id: number) => {
-        task.finishTask(id)
+        taskModel.finishTask(id)
         tasks.refresh()
       },
       removeTask: (id: number) => {
-        task.removeItem(id)
+        taskModel.removeItem(id)
         tasks.refresh()
       }
     })
     const tableRefs = toRefs(tasks)
 
     const finishTasks: FinishProps = reactive({
-      finishItems: task.getCurrentTask().finishItems,
+      finishItems: taskModel.getCurrentTask().finishItems,
       refreshFinish: () => {
         const items = finishTasks.finishItems
-        const newItems = task.getCurrentTask().finishItems
+        const newItems = taskModel.getCurrentTask().finishItems
         finishTasks.finishItems = items.splice(0, items.length, ...newItems)
         finishTasks.finishItems.length = newItems.length
       },
       restart: (id: number) => {
-        task.restartTask(id)
+        taskModel.restartTask(id)
         finishTasks.refreshFinish()
         tasks.refresh()
       },
       removeFinishTask: (id: number) => {
-        task.removeFinishItem(id)
+        taskModel.removeFinishItem(id)
         finishTasks.refreshFinish()
       }
     })
@@ -132,6 +135,13 @@ export default defineComponent({
     const listenClick = (key: string) => {
       curKey.value = key
     }
+
+    setInterval(() => {
+      if (hasRunging.value) {
+        taskModel.runTask()
+        tasks.refresh()
+      }
+    }, 1000)
 
     return {
       modalRef,

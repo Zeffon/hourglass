@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-11-09 06:05:22
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-13 22:57:35
+ * @LastEditTime: 2021-11-13 23:55:38
  */
 import storage from 'good-storage'
 import { TASK_STATUS } from '.'
@@ -105,6 +105,17 @@ export class Task {
     this._modifyStatus(id, TASK_STATUS.RUNNING)
   }
 
+  runTask() {
+    const items = this._getTaskData().items
+    const runItem = items.find(
+      (item: any) => item.status === TASK_STATUS.RUNNING
+    )
+    if (runItem !== undefined) {
+      runItem.time += 1
+      this._refreshStorage()
+    }
+  }
+
   restartTask(id: number) {
     const item = this._findEqualFinishItem(id)
     item.status = TASK_STATUS.INIT
@@ -117,15 +128,20 @@ export class Task {
     this._modifyStatus(id, TASK_STATUS.PAUSING)
   }
 
-  _modifyStatus(id: number, status: number) {
-    const oldItem = this._findEqualItem(id)
-    oldItem.status = status
-    this._refreshStorage()
-  }
-
   isEmpty() {
     const taskData = this._getTaskData()
     return taskData.items.length === 0
+  }
+
+  hasRunning() {
+    const items = this._getTaskData().items
+    let running = false
+    items.forEach((item: any) => {
+      if (item.status === TASK_STATUS.RUNNING) {
+        running = true
+      }
+    })
+    return running
   }
 
   _findEqualItem(id: number) {
@@ -194,6 +210,12 @@ export class Task {
     const taskData = this._getTaskData()
     const items = taskData.finishItems
     items.unshift(newItem)
+  }
+
+  _modifyStatus(id: number, status: number) {
+    const oldItem = this._findEqualItem(id)
+    oldItem.status = status
+    this._refreshStorage()
   }
 
   findEqualItem(id: number) {
