@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-11-09 06:05:22
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-13 22:48:54
+ * @LastEditTime: 2021-11-13 22:57:35
  */
 import storage from 'good-storage'
 import { TASK_STATUS } from '.'
@@ -192,9 +192,8 @@ export class Task {
 
   _pushFinishItem(newItem: TaskModel) {
     const taskData = this._getTaskData()
-    console.log(taskData)
     const items = taskData.finishItems
-    items.push(newItem)
+    items.unshift(newItem)
   }
 
   findEqualItem(id: number) {

@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-10-30 21:11:58
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-13 22:12:22
+ * @LastEditTime: 2021-11-13 23:19:56
 -->
 <template>
   <div class="m-table">
@@ -16,10 +16,10 @@
           @change="(level) => changeLevel(task.id, level)"
         />
       </div>
-      <div class="m-table__item-time">{{ task.time }}min</div>
+      <div class="m-table__item-time">{{ calcTime(task.time) }}</div>
       <div class="m-table__item-times">{{ task.end_time }}</div>
       <div class="m-table__item-op">
-        <div class="icon start" @click="restartTask(task.id)" />
+        <div class="icon restart" @click="restartTask(task.id)" />
         <div class="icon delete" @click="deleteTask(task.id)" />
       </div>
     </div>
@@ -31,6 +31,7 @@ import { defineComponent, reactive, toRefs } from 'vue'
 import MLevel from './level.vue'
 import { Task } from '../models'
 import { TASK_STATUS } from '../models'
+import { secondToDate } from '../utils/time'
 
 const task = new Task()
 export default defineComponent({
@@ -66,11 +67,16 @@ export default defineComponent({
       emit('delete', id)
     }
 
+    const calcTime = (time: number) => {
+      return secondToDate(time)
+    }
+
     return {
       ...dataRefs,
       changeLevel,
       restartTask,
-      deleteTask
+      deleteTask,
+      calcTime
     }
   }
 })
@@ -80,14 +86,8 @@ export default defineComponent({
   width: 20px;
   height: 20px;
 }
-.start {
+.restart {
   background: url('~@/assets/images/start.png') no-repeat;
-}
-.stop {
-  background: url('~@/assets/images/stop.png') no-repeat;
-}
-.finish {
-  background: url('~@/assets/images/finish.png') no-repeat;
 }
 .delete {
   background: url('~@/assets/images/delete.png') no-repeat;
