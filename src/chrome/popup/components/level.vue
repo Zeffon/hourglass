@@ -16,7 +16,7 @@
 <script lang="ts">
 import { defineComponent, watch } from 'vue'
 import { ref } from 'vue'
-import { TASK_LEVEL } from '../models'
+import { TASK_LEVEL, LEVEL_ARRAY } from '../models'
 
 export default defineComponent({
   name: 'm-level',
@@ -29,7 +29,7 @@ export default defineComponent({
     }
   },
   setup(props, { emit }) {
-    const options = ref(['一般', '重要', '紧急'])
+    const options = ref(LEVEL_ARRAY)
     const level = options.value[props.level]
     const selectName = ref(level)
     const selectCls = ref('select-' + props.level)

@@ -23,3 +23,5 @@ export const TAG_KEY = {
   TWO: 'two',
   THREE: 'three'
 }
+
+export const LEVEL_ARRAY = ['一般', '重要', '紧急']
