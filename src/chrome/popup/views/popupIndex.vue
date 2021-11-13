@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-10-09 22:02:36
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-13 21:53:24
+ * @LastEditTime: 2021-11-13 22:53:11
 -->
 <template>
   <div class="g-popup">
@@ -15,6 +15,13 @@
       />
     </div>
     <div class="g-popup-main">
+      <FinishTable
+        ref="finshTableRef"
+        :data="finishItems"
+        @restart="restart"
+        @delete="removeFinishTask"
+        v-show="curKey === TAG_KEY.ONE"
+      />
       <MTable
         ref="tableRef"
         :data="items"
@@ -22,10 +29,10 @@
         @start="start"
         @stop="stop"
         @finish="finish"
-        v-if="curKey === TAG_KEY.TWO"
+        v-show="curKey === TAG_KEY.TWO"
       />
     </div>
-    <div class="g-popup-footer">
+    <div class="g-popup-footer" v-if="curKey === TAG_KEY.TWO">
       <div class="add-button" @click="showTask">新增</div>
     </div>
     <MTaskAdd ref="modalRef" @ok="refresh"></MTaskAdd>
@@ -34,10 +41,10 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, toRefs } from 'vue'
-import { MHeader, MTable, MTaskAdd } from '../components'
+import { MHeader, MTable, MTaskAdd, FinishTable } from '../components'
 import { TAG_KEY, Task, TaskModel } from '../models'
 
-interface DataProps {
+interface TableProps {
   items: TaskModel[]
   refresh: () => void
   start: (id: number) => void
@@ -45,13 +52,20 @@ interface DataProps {
   finish: (id: number) => void
   removeTask: (id: number) => void
 }
+interface FinishProps {
+  finishItems: TaskModel[]
+  refreshFinish: () => void
+  restart: (id: number) => void
+  removeFinishTask: (id: number) => void
+}
 const task = new Task()
 export default defineComponent({
   name: 'popup-index',
   components: {
     MHeader,
     MTable,
-    MTaskAdd
+    MTaskAdd,
+    FinishTable
   },
   data() {
     return {
@@ -61,9 +75,10 @@ export default defineComponent({
   setup() {
     const modalRef = ref<null | { show: () => null }>(null)
     const tableRef = ref<null | HTMLElement>(null)
+    const finshTableRef = ref<null | HTMLElement>(null)
     const curKey = ref(TAG_KEY.TWO)
 
-    const tasks: DataProps = reactive({
+    const tasks: TableProps = reactive({
       items: task.getCurrentTask().items,
       refresh: () => {
         const items = tasks.items
@@ -88,7 +103,27 @@ export default defineComponent({
         tasks.refresh()
       }
     })
-    const refData = toRefs(tasks)
+    const tableRefs = toRefs(tasks)
+
+    const finishTasks: FinishProps = reactive({
+      finishItems: task.getCurrentTask().finishItems,
+      refreshFinish: () => {
+        const items = finishTasks.finishItems
+        const newItems = task.getCurrentTask().finishItems
+        finishTasks.finishItems = items.splice(0, items.length, ...newItems)
+        finishTasks.finishItems.length = newItems.length
+      },
+      restart: (id: number) => {
+        task.restartTask(id)
+        finishTasks.refreshFinish()
+        tasks.refresh()
+      },
+      removeFinishTask: (id: number) => {
+        task.removeFinishItem(id)
+        finishTasks.refreshFinish()
+      }
+    })
+    const finishTableRefs = toRefs(finishTasks)
 
     const showTask = () => {
       modalRef.value?.show()
@@ -101,8 +136,10 @@ export default defineComponent({
     return {
       modalRef,
       tableRef,
+      finshTableRef,
       curKey,
-      ...refData,
+      ...tableRefs,
+      ...finishTableRefs,
       showTask,
       listenClick
     }

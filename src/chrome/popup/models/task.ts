@@ -3,10 +3,11 @@
  * @Author: Zeffon
  * @Date: 2021-11-09 06:05:22
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-13 21:35:47
+ * @LastEditTime: 2021-11-13 22:48:54
  */
 import storage from 'good-storage'
 import { TASK_STATUS } from '.'
+import { curTimeStr } from '../utils/time'
 
 export interface TaskModel {
   id: number
@@ -68,8 +69,21 @@ export class Task {
     this._refreshStorage()
   }
 
+  removeFinishItem(id: number) {
+    const oldItemIndex = this._findEqualFinishItemIndex(id)
+    const taskData = this._getTaskData()
+    taskData.finishItems.splice(oldItemIndex, 1)
+    this._refreshStorage()
+  }
+
   modifyLevel(id: number, level: number) {
     const oldItem = this._findEqualItem(id)
+    oldItem.level = level
+    this._refreshStorage()
+  }
+
+  modifyFinishLevel(id: number, level: number) {
+    const oldItem = this._findEqualFinishItem(id)
     oldItem.level = level
     this._refreshStorage()
   }
@@ -77,6 +91,7 @@ export class Task {
   finishTask(id: number) {
     const item = this._findEqualItem(id)
     item.status = TASK_STATUS.FINISHED
+    item.end_time = curTimeStr()
     this.addFinishItem(item)
     this.removeItem(id)
     this._refreshStorage()
@@ -88,6 +103,14 @@ export class Task {
       item.status = TASK_STATUS.PAUSING
     })
     this._modifyStatus(id, TASK_STATUS.RUNNING)
+  }
+
+  restartTask(id: number) {
+    const item = this._findEqualFinishItem(id)
+    item.status = TASK_STATUS.INIT
+    this._pushItem(item)
+    this.removeFinishItem(id)
+    this._refreshStorage()
   }
 
   stopTask(id: number) {
@@ -112,9 +135,23 @@ export class Task {
     })
   }
 
+  _findEqualFinishItem(id: number) {
+    const taskData = this._getTaskData()
+    return taskData.finishItems.find((item: TaskModel) => {
+      return item.id === id
+    })
+  }
+
   _findEqualItemIndex(id: number) {
     const taskData = this._getTaskData()
     return taskData.items.findIndex((item: TaskModel) => {
+      return item.id === id
+    })
+  }
+
+  _findEqualFinishItemIndex(id: number) {
+    const taskData = this._getTaskData()
+    return taskData.finishItems.findIndex((item: TaskModel) => {
       return item.id === id
     })
   }
@@ -157,7 +194,6 @@ export class Task {
     const taskData = this._getTaskData()
     console.log(taskData)
     const items = taskData.finishItems
-    console.log(items)
     items.push(newItem)
   }
 

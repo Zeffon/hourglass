@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-11-07 23:02:10
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-13 13:51:39
+ * @LastEditTime: 2021-11-13 22:08:42
 -->
 <template>
   <teleport to="body">
@@ -146,11 +146,11 @@ export default defineComponent({
       height: 100%;
 
       > div {
-        width: 40px;
-        height: 20px;
+        width: 56px;
+        height: 24px;
         color: #fff;
         text-align: center;
-        line-height: 1.5;
+        line-height: 1.8;
         border-radius: 4px;
         cursor: pointer;
         margin: 0 8px;
