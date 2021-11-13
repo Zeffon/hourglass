@@ -23,9 +23,19 @@
 
   &-footer {
     display: flex;
-    justify-content: end;
+    justify-content: center;
     padding-top: 16px;
     gap: 16px;
+
+    .add-button {
+      width: 80px;
+      height: 32px;
+      color: white;
+      line-height: 32px;
+      text-align: center;
+      background: $primary-color;
+      border-radius: 4px;
+    }
   }
 }
 

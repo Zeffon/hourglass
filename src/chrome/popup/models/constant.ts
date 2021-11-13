@@ -17,3 +17,9 @@ export const TASK_LEVEL = {
   IMPORTANT: 1,
   URGENT: 2
 }
+
+export const TAG_KEY = {
+  ONE: 'one',
+  TWO: 'two',
+  THREE: 'three'
+}

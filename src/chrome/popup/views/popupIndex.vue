@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-10-09 22:02:36
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-13 15:11:44
+ * @LastEditTime: 2021-11-13 21:53:24
 -->
 <template>
   <div class="g-popup">
@@ -11,7 +11,7 @@
       <MHeader
         v-model:curKey="curKey"
         :curCount="items.length"
-        @click="listenClick"
+        @select="listenClick"
       />
     </div>
     <div class="g-popup-main">
@@ -22,12 +22,11 @@
         @start="start"
         @stop="stop"
         @finish="finish"
+        v-if="curKey === TAG_KEY.TWO"
       />
     </div>
     <div class="g-popup-footer">
-      <div style="cursor: pointer" @click="showTask">新增</div>
-      <div @click="getTasks">设置</div>
-      <div>我的</div>
+      <div class="add-button" @click="showTask">新增</div>
     </div>
     <MTaskAdd ref="modalRef" @ok="refresh"></MTaskAdd>
   </div>
@@ -36,7 +35,7 @@
 <script lang="ts">
 import { defineComponent, reactive, ref, toRefs } from 'vue'
 import { MHeader, MTable, MTaskAdd } from '../components'
-import { Task, TaskModel, TASK_STATUS } from '../models'
+import { TAG_KEY, Task, TaskModel } from '../models'
 
 interface DataProps {
   items: TaskModel[]
@@ -54,16 +53,21 @@ export default defineComponent({
     MTable,
     MTaskAdd
   },
+  data() {
+    return {
+      TAG_KEY
+    }
+  },
   setup() {
     const modalRef = ref<null | { show: () => null }>(null)
     const tableRef = ref<null | HTMLElement>(null)
+    const curKey = ref(TAG_KEY.TWO)
 
-    const curKey = ref('two')
     const tasks: DataProps = reactive({
-      items: task.getAllTaskFromLocal().items,
+      items: task.getCurrentTask().items,
       refresh: () => {
         const items = tasks.items
-        const newItems = task.getAllTaskFromLocal().items
+        const newItems = task.getCurrentTask().items
         tasks.items = items.splice(0, items.length, ...newItems)
         tasks.items.length = newItems.length
       },
@@ -90,12 +94,8 @@ export default defineComponent({
       modalRef.value?.show()
     }
 
-    const getTasks = () => {
-      console.log(task.getAllTaskFromLocal())
-    }
-
-    const listenClick = () => {
-      console.log(curKey)
+    const listenClick = (key: string) => {
+      curKey.value = key
     }
 
     return {
@@ -104,7 +104,6 @@ export default defineComponent({
       curKey,
       ...refData,
       showTask,
-      getTasks,
       listenClick
     }
   }

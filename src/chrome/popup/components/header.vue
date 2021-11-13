@@ -2,21 +2,21 @@
   <div class="m-header">
     <div
       class="m-header__item"
-      :class="key === 'one' ? 'is-active' : ''"
+      :class="key === TAG_KEY.ONE ? 'is-active' : ''"
       @click="clickOne"
     >
       已完成
     </div>
     <div
       class="m-header__item"
-      :class="key === 'two' ? 'is-active' : ''"
+      :class="key === TAG_KEY.TWO ? 'is-active' : ''"
       @click="clickTwo"
     >
       当前（{{ curCount }}）
     </div>
     <div
       class="m-header__item"
-      :class="key === 'three' ? 'is-active' : ''"
+      :class="key === TAG_KEY.THREE ? 'is-active' : ''"
       @click="clickThree"
     >
       数据统计
@@ -27,6 +27,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { ref } from 'vue'
+import { TAG_KEY } from '../models'
 
 export default defineComponent({
   name: 'm-header',
@@ -38,24 +39,34 @@ export default defineComponent({
     },
     curKey: {
       type: String,
-      default: 'three'
+      default: TAG_KEY.ONE
     }
   },
-  setup(props) {
-    const key = ref(props.curKey)
+  data() {
     return {
-      key
+      TAG_KEY
     }
   },
-  methods: {
-    clickOne() {
-      this.key = 'one'
-    },
-    clickTwo() {
-      this.key = 'two'
-    },
-    clickThree() {
-      this.key = 'three'
+  emits: ['select'],
+  setup(props, { emit }) {
+    const key = ref(props.curKey)
+    const clickOne = () => {
+      key.value = TAG_KEY.ONE
+      emit('select', key.value)
+    }
+    const clickTwo = () => {
+      key.value = TAG_KEY.TWO
+      emit('select', key.value)
+    }
+    const clickThree = () => {
+      key.value = TAG_KEY.THREE
+      emit('select', key.value)
+    }
+    return {
+      key,
+      clickOne,
+      clickTwo,
+      clickThree
     }
   }
 })

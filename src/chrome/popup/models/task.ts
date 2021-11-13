@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-11-09 06:05:22
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-13 15:18:06
+ * @LastEditTime: 2021-11-13 21:35:47
  */
 import storage from 'good-storage'
 import { TASK_STATUS } from '.'
@@ -21,7 +21,8 @@ export class Task {
   private static instance: Task
   static STORAGE_KEY = 'task'
   _taskData = {
-    items: []
+    items: [],
+    finishItems: []
   }
 
   constructor() {
@@ -33,20 +34,10 @@ export class Task {
   }
 
   getCurrentTask() {
-    const tasks = this._getTaskData().items as any[]
-    return tasks.filter((item) => {
-      return item.status !== TASK_STATUS.FINISHED
-    })
+    return this._getTaskData()
   }
 
   getFinishTask() {
-    const tasks = this._getTaskData().items as any[]
-    return tasks.filter((item) => {
-      return item.status === TASK_STATUS.FINISHED
-    })
-  }
-
-  getAllTaskFromLocal() {
     return this._getTaskData()
   }
 
@@ -65,6 +56,11 @@ export class Task {
     this._refreshStorage()
   }
 
+  addFinishItem(newItem: TaskModel) {
+    this._pushFinishItem(newItem)
+    this._refreshStorage()
+  }
+
   removeItem(id: number) {
     const oldItemIndex = this._findEqualItemIndex(id)
     const taskData = this._getTaskData()
@@ -79,7 +75,11 @@ export class Task {
   }
 
   finishTask(id: number) {
-    this._modifyStatus(id, TASK_STATUS.FINISHED)
+    const item = this._findEqualItem(id)
+    item.status = TASK_STATUS.FINISHED
+    this.addFinishItem(item)
+    this.removeItem(id)
+    this._refreshStorage()
   }
 
   startTask(id: number) {
@@ -120,7 +120,10 @@ export class Task {
   }
 
   _getTaskData() {
-    if (this._taskData.items.length !== 0) {
+    if (
+      this._taskData.items.length !== 0 ||
+      this._taskData.finishItems.length !== 0
+    ) {
       return this._taskData
     }
     let taskData = storage.get(Task.STORAGE_KEY)
@@ -133,7 +136,8 @@ export class Task {
 
   _initTaskDataStorage() {
     const taskData = {
-      items: []
+      items: [],
+      finishItems: []
     }
     storage.set(Task.STORAGE_KEY, taskData)
     return taskData
@@ -146,6 +150,14 @@ export class Task {
   _pushItem(newItem: TaskModel) {
     const taskData = this._getTaskData()
     const items = taskData.items
+    items.push(newItem)
+  }
+
+  _pushFinishItem(newItem: TaskModel) {
+    const taskData = this._getTaskData()
+    console.log(taskData)
+    const items = taskData.finishItems
+    console.log(items)
     items.push(newItem)
   }
 
