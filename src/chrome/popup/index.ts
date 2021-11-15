@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import store from './store'
-import * as echarts from 'echarts';
+import * as echarts from 'echarts'
 
 // 引入全局样式
 import '@/assets/scss/index.scss'
