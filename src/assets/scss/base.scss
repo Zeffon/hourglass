@@ -1,4 +1,4 @@
-// 全局通用样式
+//-------------------------------- 全局通用样式 ---------------------------------//
 .g-popup {
   display: flex;
   flex-direction: column;
@@ -57,7 +57,25 @@
   }
 }
 
-// 模块通用样式
+// 浏览器滚动条
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 3px;
+  background: transparent;
+}
+
+*::-webkit-scrollbar-track {
+  border-radius: 4px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.01);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: $scrollbar-bg;
+  border-radius: 4px;
+  box-shadow: 0 0 2px 0 rgba(250, 250, 250, .5);
+}
+
+//-------------------------------- 模块通用样式 ---------------------------------//
 .m-header {
   display: flex;
   border: 1px solid $color-theme;
@@ -83,10 +101,12 @@
     padding: 4px;
 
     &-index {
+      width: 16px;
+      text-align: right;
       margin-right: 4px;
     }
     &-name {
-      width: 250px;
+      width: 240px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
