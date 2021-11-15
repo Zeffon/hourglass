@@ -3,13 +3,18 @@
  * @Author: Zeffon
  * @Date: 2021-10-30 21:11:58
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-13 23:15:17
+ * @LastEditTime: 2021-11-15 08:04:11
 -->
 <template>
   <div class="m-table">
     <div class="m-table__item" v-for="(task, index) in tasks" :key="index">
       <div class="m-table__item-index">{{ index + 1 + '.' }}</div>
-      <div class="m-table__item-name">{{ task.name }}</div>
+      <div
+        class="m-table__item-name"
+        :class="task.status === TASK_STATUS.RUNNING ? 'is-active' : ''"
+      >
+        {{ task.name }}
+      </div>
       <div class="m-table__item-level">
         <m-level
           v-model:level="task.level"
