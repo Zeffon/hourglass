@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-11-07 23:02:10
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-13 22:08:42
+ * @LastEditTime: 2021-11-15 22:49:21
 -->
 <template>
   <teleport to="body">
@@ -83,9 +83,9 @@ export default defineComponent({
       const strArr = textdata.split('\n')
 
       strArr.forEach((item, index) => {
-        const timestr = new Date().getTime()
+        const timestamp = new Date().getTime()
         const obj: TaskModel = {
-          id: timestr + index,
+          id: timestamp + index,
           name: item,
           level: TASK_LEVEL.GENERAL,
           time: 0,

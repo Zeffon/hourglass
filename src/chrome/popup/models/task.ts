@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-11-09 06:05:22
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-13 23:55:38
+ * @LastEditTime: 2021-11-15 23:18:01
  */
 import storage from 'good-storage'
 import { TASK_STATUS } from '.'
@@ -14,6 +14,7 @@ export interface TaskModel {
   name: string
   time: number
   level: number
+  start_time?: number
   end_time?: string
   status: number
 }
@@ -102,7 +103,10 @@ export class Task {
     items.forEach((item: any) => {
       item.status = TASK_STATUS.PAUSING
     })
-    this._modifyStatus(id, TASK_STATUS.RUNNING)
+    const oldItem = this._findEqualItem(id)
+    oldItem.status = TASK_STATUS.RUNNING
+    oldItem.start_time = new Date().getTime()
+    this._refreshStorage()
   }
 
   runTask() {
@@ -111,7 +115,10 @@ export class Task {
       (item: any) => item.status === TASK_STATUS.RUNNING
     )
     if (runItem !== undefined) {
-      runItem.time += 1
+      const curTime = new Date().getTime()
+      const diffTime = (curTime - runItem.start_time) / 1000
+      runItem.time = runItem.time + Math.round(diffTime)
+      runItem.start_time = curTime
       this._refreshStorage()
     }
   }
