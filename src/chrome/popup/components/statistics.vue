@@ -6,7 +6,7 @@
 import dayjs from 'dayjs'
 import { defineComponent } from 'vue'
 import { Task } from '../models'
-import { timestampToTime } from '../utils/time'
+import { curYear, timestampToTime } from '../utils/time'
 
 const task = new Task()
 export default defineComponent({
@@ -21,6 +21,11 @@ export default defineComponent({
     )
     // 绘制图表
     myChart.setOption({
+      title: {
+        top: 0,
+        left: 'center',
+        text: `${curYear()}年任务完成统计`
+      },
       tooltip: {
         position: 'top',
         formatter: function (p: any) {
@@ -34,17 +39,17 @@ export default defineComponent({
         type: 'piecewise',
         orient: 'horizontal',
         left: 'center',
-        top: 20,
+        top: 40,
         inRange: {
           color: ['rgba(0,255,0,0.1)', 'rgba(255,255,0,0.7)', 'rgba(255,0,0,1)']
         }
       },
       calendar: {
-        top: 80,
+        top: 100,
         left: 20,
         right: 10,
         cellSize: ['auto', 13],
-        range: dayjs().year(),
+        range: curYear(),
         itemStyle: {
           borderWidth: 0.5
         },
