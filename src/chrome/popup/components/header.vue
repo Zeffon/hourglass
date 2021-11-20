@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, watch } from 'vue'
 import { ref } from 'vue'
 import { TAG_KEY } from '../models'
 
@@ -50,17 +50,19 @@ export default defineComponent({
   emits: ['select'],
   setup(props, { emit }) {
     const key = ref(props.curKey)
+
+    watch(key, (val) => {
+      console.log(val)
+      emit('select', val)
+    })
     const clickOne = () => {
       key.value = TAG_KEY.ONE
-      emit('select', key.value)
     }
     const clickTwo = () => {
       key.value = TAG_KEY.TWO
-      emit('select', key.value)
     }
     const clickThree = () => {
       key.value = TAG_KEY.THREE
-      emit('select', key.value)
     }
     return {
       key,
