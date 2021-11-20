@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-11-13 22:16:31
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-14 00:21:26
+ * @LastEditTime: 2021-11-20 19:29:30
  */
 import dayjs from 'dayjs'
 
@@ -24,4 +24,15 @@ export const secondToDate = (time: number) => {
     return `${m}:${sStr}`
   }
   return `${h}:${m}:${sStr}`
+}
+
+/**
+ * 时间戳转换
+ * 1637407602990 -> 2021-11-20
+ */
+export const dateToTime = (date: string) => {
+  return dayjs(date).format('YYYY-MM-DD')
+}
+export const timestampToTime = (timestamp: number) => {
+  return dayjs(timestamp).format('YYYY-MM-DD')
 }

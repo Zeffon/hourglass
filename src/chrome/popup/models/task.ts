@@ -3,11 +3,11 @@
  * @Author: Zeffon
  * @Date: 2021-11-09 06:05:22
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-15 23:18:01
+ * @LastEditTime: 2021-11-20 19:39:25
  */
 import storage from 'good-storage'
 import { TASK_STATUS } from '.'
-import { curTimeStr } from '../utils/time'
+import { curTimeStr, dateToTime } from '../utils/time'
 
 export interface TaskModel {
   id: number
@@ -39,8 +39,25 @@ export class Task {
     return this._getTaskData()
   }
 
-  getFinishTask() {
-    return this._getTaskData()
+  calcDayFinishCount() {
+    const array = this._getTaskData().finishItems
+
+    const list = array.reduce((obj: any, item: any) => {
+      const date = dateToTime(item.end_time)
+      const find = obj.find((o: any) => dateToTime(o.end_time) === date)
+      const _d = { date, count: 1 }
+      find ? find.count++ : obj.push(_d)
+      return obj
+    }, [])
+    return list
+  }
+
+  calcDayFinishMaxCount() {
+    const list = this.calcDayFinishCount()
+    const maxCount = list.reduce((pre: any, cur: any) =>
+      pre.count < cur.count ? cur : pre
+    ).count
+    return maxCount
   }
 
   clear() {

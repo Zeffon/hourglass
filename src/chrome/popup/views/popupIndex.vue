@@ -3,7 +3,7 @@
  * @Author: Zeffon
  * @Date: 2021-10-09 22:02:36
  * @LastEditors: Zeffon
- * @LastEditTime: 2021-11-13 23:53:53
+ * @LastEditTime: 2021-11-20 13:40:49
 -->
 <template>
   <div class="g-popup">
@@ -31,6 +31,7 @@
         @finish="finish"
         v-show="curKey === TAG_KEY.TWO"
       />
+      <MStatistics v-show="curKey === TAG_KEY.THREE" />
     </div>
     <div class="g-popup-footer" v-if="curKey === TAG_KEY.TWO">
       <div class="add-button" @click="showTask">新增</div>
@@ -41,7 +42,13 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, toRefs } from 'vue'
-import { MHeader, MTable, MTaskAdd, FinishTable } from '../components'
+import {
+  MHeader,
+  MTable,
+  MTaskAdd,
+  FinishTable,
+  MStatistics
+} from '../components'
 import { TAG_KEY, Task, TaskModel } from '../models'
 
 interface TableProps {
@@ -65,7 +72,8 @@ export default defineComponent({
     MHeader,
     MTable,
     MTaskAdd,
-    FinishTable
+    FinishTable,
+    MStatistics
   },
   data() {
     return {
